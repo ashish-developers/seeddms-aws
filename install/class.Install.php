@@ -376,6 +376,11 @@ echo '<p><a href="install.php">' . getMLText("settings_start_install") . '</a></
 					<td><?php printMLText("settings_createdatabase");?>:</td>
 					<td><input name="createDatabase" type="checkbox" style="background:yellow"/></td>
 				</tr>
+				<tr ><td><b> QuickReviewer Setting</b></td> </tr>
+				<tr>
+					<td>API Token:</td>
+					<td><input type="text" name="qrToken" value="<?php echo $settings->_quickReviewerApiToken; ?>" /></td>
+				</tr>
 				<tr>
 					<td></td>
 					<td><input type="submit" class="btn btn-primary" value="<?php printMLText("apply");?>" /></td>

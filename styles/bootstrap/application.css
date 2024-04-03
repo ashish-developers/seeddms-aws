@@ -429,3 +429,14 @@ ul.qq-upload-list li span {
   border-color: #ddd;
     }
 }
+
+.qr_logo{
+	background-color: #fff; width: 23px!important;
+}
+.quick_reviewer{
+	border: none;
+	background-color: #fff;
+}
+.quick_reviewer:hover {
+	background-color: #ececec!important;
+}

@@ -1523,7 +1523,92 @@ $(document).ready(function() { /* {{{ */
 	var tasks = Array(
 		{name: 'test', view: 'null', action: null, func: 
 			test = function() {
-				console.log('Run in SeedDMSAjax');
+				console.log('Run in SeedDMSAjax11');
+				let requestParams = {
+					"userId": data.id,
+					"userName": data.fullName,
+					"userEmail": data.email,
+					"userRole": "owner",
+					"userSettings": {
+						"siteName": "",
+						"siteLogoPath": "",
+						"siteSetting": {
+							"themeColors": {
+								"primaryColor": "#ffae00",
+								"secondaryColor": "#69b34c",
+								"textColor": "#813b3b",
+								"darkPrimaryColor": "#ffae00",
+								"darkSecondaryColor": "#69b34c",
+								"darkTextColor": "#000000"
+							},
+							"siteDarkLogoPath": "",
+							"siteFaviconPath": "",
+							"theme": "default",
+							"allowAudioComment": true,
+							"allowCommentWithoutAnnoMarker": true,
+							"allowEditComments": false,
+							"allowRespondOnPrevVersion": false,
+							"allowDeleteComment": false,
+							"moveComment": false
+						}
+					},
+					"isParentShare": true,
+					"docObject": [
+						{
+							"docId": data.documentId,
+							"docTitle": data.originalFileName,
+							"mediaType": data.fileType,
+							"status": 1,
+							"folderId": 0,
+							"expiryDate": 0,
+							"docSource": "seedDms",
+							"allowComment": 1,
+							"allowDownload": 0,
+							"versionData": [
+								{
+									"versionNo": data.versionNo,
+									"docPath": data.docPath,
+									"docDownloadPath": data.docDownloadPath,
+									"sharingForward": 0,
+									"download": 0,
+									"videoHW": null,
+									"frameHW": null,
+									"totalFrame": null,
+									"fileSize": data.fileSize,
+									"isActive": 1,
+									"docFileName": data.originalFileName
+								}
+							],
+							"docSharedWith": [],
+							"teamMembers": "",
+							"proofSetting": {
+								"allowPdfCompare": false
+							}
+						}
+					],
+					"webhookUrl": {
+						"comment": null,
+						"status": null,
+						"share": null,
+						"checklogin": null
+					}
+				}
+				$.ajax({
+					type: "POST",
+					url: "https://beta.quickreviewer.com/proofapi/proof/create-proof",
+					data: JSON.stringify(requestParams),// now data come in this function
+					contentType: "application/json; charset=utf-8",
+					crossDomain: true,
+					headers: {"access_token": "65d69be98ddf0c6b33446d98600bf99a"},
+					dataType: "json",
+					success: function (data, status, jqXHR) {
+						window.open(data[0].proofUrlPublic, '_blank'); 
+					},
+					error: function (jqXHR, status) {
+						console.log(jqXHR);
+						alert('fail' + status.code);
+					}
+				});
 			}
 		}
 	);

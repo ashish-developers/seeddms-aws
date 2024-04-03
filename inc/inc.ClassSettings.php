@@ -112,6 +112,8 @@ class Settings { /* {{{ */
 	var $_stagingDir = null;
 	// Where the lucene fulltext index is saved
 	var $_luceneDir = null;
+
+	var $_quickReviewerApiToken = null;
 	// Where the drop folders are located
 	var $_dropFolderDir = null;
 	// Where the backup directory is located
@@ -608,7 +610,7 @@ class Settings { /* {{{ */
 		$this->_libraryFolder = intval($tab["libraryFolder"]);
 		$this->_defaultDocPosition = strval($tab["defaultDocPosition"]);
 		$this->_defaultFolderPosition = strval($tab["defaultFolderPosition"]);
-
+		$this->_quickReviewerApiToken = strval($tab["quickReviewerApiToken"]);
 		// XML Path: /configuration/site/webdav
 		$node = $xml->xpath('/configuration/site/webdav');
 		if($node) {
@@ -646,6 +648,7 @@ class Settings { /* {{{ */
 				$this->_contentDir .= DIRECTORY_SEPARATOR;
 			$this->_cacheDir = strval($tab["cacheDir"]);
 			$this->_stagingDir = strval($tab["stagingDir"]);
+			//$this->_quickReviewerApiToken = strval($tab(["quickReviewerApiToken"]));
 			$this->_luceneDir = strval($tab["luceneDir"]);
 			$this->_dropFolderDir = strval($tab["dropFolderDir"]);
 			$this->_backupDir = strval($tab["backupDir"]);
@@ -1041,6 +1044,7 @@ class Settings { /* {{{ */
     $this->setXMLAttributValue($node, "contentDir", $this->_contentDir);
     $this->setXMLAttributValue($node, "cacheDir", $this->_cacheDir);
     $this->setXMLAttributValue($node, "stagingDir", $this->_stagingDir);
+	$this->setXMLAttributValue($node, "quickReviewerApiToken", $this->_quickReviewerApiToken);	
     $this->setXMLAttributValue($node, "luceneDir", $this->_luceneDir);
     $this->setXMLAttributValue($node, "dropFolderDir", $this->_dropFolderDir);
     $this->setXMLAttributValue($node, "backupDir", $this->_backupDir);

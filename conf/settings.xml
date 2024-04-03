@@ -65,6 +65,7 @@
       sortFoldersDefault = "u"
       defaultDocPosition = "end"
       defaultFolderPosition = "end"
+      quickReviewerApiToken = "65d69be98ddf0c6b33446d98600bf99a"
     />
     <!--
        - enableCalendar: enable/disable calendar
@@ -100,18 +101,18 @@
        - backupDir: where the backups are saved
     -->
     <server
-      rootDir = ""
-      httpRoot = "/seeddms60x/"
-      contentDir = ""
-      stagingDir = ""
-      luceneDir = ""
+      rootDir = "/var/www/html/"
+      httpRoot = "/"
+      contentDir = "/var/www/html/data/"
+      stagingDir = "/var/www/html/data/staging/"
+      luceneDir = "/var/www/html/data/lucene/"
       logFileEnable = "true"
       logFileRotation = "d"
       enableLargeFileUpload = "false"
       partitionSize = "2000000"
       dropFolderDir = ""
-      cacheDir = ""
-      backupDir = ""
+      cacheDir = "/var/www/html/data/cache/"
+      backupDir = "/var/www/html/data/backup/"
     />
     <!--
        - enableGuestLogin: If you want anybody to login as guest, set the following line to true
@@ -206,12 +207,12 @@
        - doNotCheckVersion: Whether or not to check the database schema for its correct version.
     -->
     <database
-      dbDriver = "sqlite"
-      dbHostname = ""
-      dbDatabase = ""
-      dbUser = ""
-      dbPass = ""
-      doNotCheckVersion = "false"
+      dbDriver = "mysql"
+      dbHostname = "ls-def7eedcbeb28d491017bc9abbb9356818c21523.clq22w0oajxn.us-east-1.rds.amazonaws.com"
+      dbDatabase = "seeddms"
+      dbUser = "dbmasteruser"
+      dbPass = "Avi.Mishra4220"
+      doNotCheckVersion = "true"
     />
     <!--
        - smtpServer: SMTP Server hostname
@@ -293,8 +294,8 @@
       contentOffsetDir = "1048576"
       maxDirID = "0"
       updateNotifyTime = "86400"
-      extraPath = ""
-      maxExecutionTime = "30"
+      extraPath = "/var/www/html/pear/"
+      maxExecutionTime = "3000"
       cmdTimeout = "10"
     />
     <!--

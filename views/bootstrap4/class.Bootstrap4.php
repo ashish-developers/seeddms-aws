@@ -3201,10 +3201,62 @@ $('body').on('click', '[id^=\"table-row-folder\"] td:nth-child(2)', function(ev)
 	} /* }}} */
 
 	function documentListRowAction($document, $previewer, $skipcont=false, $version=0, $extracontent=array()) { /* {{{ */
+		
+		// echo '<pre>';
+		// print_r(($document->getLatestContent()->getMimeType()));
+
+		
 		$user = $this->params['user'];
 		$enableClipboard = $this->params['enableclipboard'];
 		$accessop = $this->params['accessobject'];
 		$onepage = $this->params['onepage'];
+
+		$id = $this->params['user']->getID();
+		$email = $this->params['user']->getEmail();
+		$fullName = $this->params['user']->getFullName();
+		$login = $this->params['user']->getLogin();
+		//$dirId = $this->params['folder']->getDocuments([0])->getLatestContent()->getDir();
+		$documentID = $document->getID();
+		$documentName = $document->getName();
+		$mimeType = $document->getLatestContent()->getMimeType();
+		$versionNo = $document->getLatestContent()->getVersion();
+		$fileType = $document->getLatestContent()->getFileType();
+		$fileSize = $document->getLatestContent()->getFileSize();
+		$fileName = $document->getLatestContent()->getFileName();
+		$originalFileName = $document->getLatestContent()->getOriginalFileName();
+		$ownerID = $this->params['folder']->getDocuments()[0]->getOwner()->getID();
+		$ownerEmail = $this->params['folder']->getDocuments()[0]->getOwner()->getEmail();
+
+		$protocol = 'http://';
+		if (isset($_SERVER['HTTPS'])) {
+			$protocol = 'https://';
+		}
+
+		$documentViewPath = $protocol.''.$_SERVER['HTTP_HOST'].$_SERVER['CWD']."/op/op.ViewOnline1.php?documentid=".$documentID."&version=".$versionNo;
+		$documentDownloadPath = $protocol.''.$_SERVER['HTTP_HOST'].$_SERVER['CWD']."/op/op.download1.php?documentid=".$documentID."&version=".$versionNo;
+
+		// echo '<pre>';
+		// print_r($this->params['folder']->getDocuments()[0]->getOwner()); die;
+		$proofRequest = [
+			"id" => $id,
+			"email" => $email,
+			"fullName" => $fullName,
+			"login" => $login,
+			"documentId" => $documentID,
+			"documentName" => $documentName,
+			"mimeType" => $mimeType,
+			"versionNo" => $versionNo,
+			"fileType" => str_replace(".", "", $fileType),
+			"fileSize" => $fileSize,
+			"fileName" => $fileName,
+			"originalFileName" => $originalFileName,
+			"docPath" => $documentViewPath,
+			"docDownloadPath" => $documentDownloadPath,
+			"ownerID" => $ownerID,
+			"ownerEmail" => $ownerEmail,
+			"ownerFullName" => $this->params['folder']->getDocuments()[0]->getOwner()->getfullName(),
+			"apiToken" => $this->params['settings']->_quickReviewerApiToken
+		];
 
 		$content = '';
 		$content .= "<div class=\"list-action\">";
@@ -3235,7 +3287,11 @@ $('body').on('click', '[id^=\"table-row-folder\"] td:nth-child(2)', function(ev)
 		}
 		if($onepage)
 			$actions['view_document'] = '<a href="'.$this->params['settings']->_httpRoot.'out/out.ViewDocument.php?documentid='.$docID.'" title="'.getMLText("view_document").'"><i class="fa fa-eye"></i></a>';
-
+		if($onepage)
+			$actions['open_proof'] = 
+		       "<button value='' onClick='return test(".json_encode($proofRequest).")' class='quick_reviewer' title='".getMLText('proof_document')."'>
+				<img class='qr_logo' width='18px' src='http://".$_SERVER["HTTP_HOST"]."/views/bootstrap4/images/qr.png'>
+				</button>";
 		/* Do not use $this->callHook() because $menuitems must be returned by the the
 		 * first hook and passed to next hook. $this->callHook() will just pass
 		 * the menuitems to each single hook. Hence, the last hook will win.

@@ -456,3 +456,16 @@ ul.qq-upload-list li span {
 	}
 }
 
+.qr_logo{
+	border: none;
+	background-color: #fff; width: 18px!important;
+}
+.quick_reviewer{
+	border: none;
+	background-color: #fff;
+}
+.quick_reviewer:hover {
+	border: none;
+	background-color: #ececec!important;
+}
+

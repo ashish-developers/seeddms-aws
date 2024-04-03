@@ -1578,8 +1578,125 @@ $(document).ready(function() { /* {{{ */
 (function( SeedDMSAjax, $, undefined ) { /* {{{ */
 	var tasks = Array(
 		{name: 'test', view: 'null', action: null, func: 
-			test = function() {
-				console.log('Run in SeedDMSAjax');
+			test = function(data) {
+				let allowedFile = ["pdf","jpeg","jpg","png","mp4","gif"]
+				let mimeType = data.mimeType.split("/")[1]
+				let isMatched = allowedFile.find(el=> el == mimeType)
+				if (isMatched === undefined) {
+					alert("This file type is not allowed.");
+					return false
+				} else {
+
+					let SharedWith = [
+						{
+							"email": "Anonymous",
+							"userName": "Anonymous",
+							"userId": 572,
+							"shareAction": "Comment",
+							"download": 1,
+							"userWiseRole": "reviewer",
+							"isParentShare": false
+						}
+					]
+
+					if (data.email !== data.ownerEmail) {
+						let team = {
+							"email": data.email,
+							"userName": data.fullName,
+							"userId": data.id,
+							"shareAction": "Comment",
+							"download": 1,
+							"userWiseRole": "reviewer",
+							"isParentShare": false
+						}
+						SharedWith.push(team)
+					}
+					let requestParams = {
+						"userId": data.ownerID,
+						"userName": data.ownerFullName,
+						"userEmail": data.ownerEmail,
+						"userRole": "owner",
+						"userSettings": {
+							"siteName": "",
+							"siteLogoPath": "",
+							"siteSetting": {
+								"themeColors": {
+									"primaryColor": "#ffae00",
+									"secondaryColor": "#69b34c",
+									"textColor": "#813b3b",
+									"darkPrimaryColor": "#ffae00",
+									"darkSecondaryColor": "#69b34c",
+									"darkTextColor": "#000000"
+								},
+								"siteDarkLogoPath": "",
+								"siteFaviconPath": "",
+								"theme": "default",
+								"allowAudioComment": true,
+								"allowCommentWithoutAnnoMarker": true,
+								"allowEditComments": false,
+								"allowRespondOnPrevVersion": false,
+								"allowDeleteComment": false,
+								"moveComment": false
+							}
+						},
+						"isParentShare": true,
+						"docObject": [
+							{
+								"docId": data.documentId,
+								"docTitle": data.originalFileName,
+								"mediaType": data.mimeType.split("/")[0],
+								"status": 1,
+								"folderId": 0,
+								"expiryDate": 0,
+								"docSource": "seedDms",
+								"allowComment": 1,
+								"allowDownload": 0,
+								"versionData": [
+									{
+										"versionNo": data.versionNo,
+										"docPath": data.docPath,
+										"docDownloadPath": data.docDownloadPath,
+										"sharingForward": 0,
+										"download": 0,
+										"videoHW": null,
+										"frameHW": null,
+										"totalFrame": null,
+										"fileSize": data.fileSize,
+										"isActive": 1,
+										"docFileName": data.originalFileName
+									}
+								],
+								"docSharedWith": SharedWith,
+								"teamMembers": "",
+								"proofSetting": {
+									"allowPdfCompare": false
+								}
+							}
+						],
+						"webhookUrl": {
+							"comment": null,
+							"status": null,
+							"share": null,
+							"checklogin": null
+						}
+					}
+					$.ajax({
+						type: "POST",
+						url: "https://beta.quickreviewer.com/proofapi/proof/create-proof",
+						data: JSON.stringify(requestParams),// now data come in this function
+						contentType: "application/json",
+						crossDomain: true,
+						headers: {"access_token": data.apiToken},
+						dataType: "json",
+						success: function (data, status, jqXHR) {
+							window.open(data[0].proofUrlPublic, '_blank'); 
+						},
+						error: function (jqXHR, status) {
+							console.log(jqXHR);
+							alert('fail' + status.code);
+						}
+					});
+				}
 			}
 		}
 	);
